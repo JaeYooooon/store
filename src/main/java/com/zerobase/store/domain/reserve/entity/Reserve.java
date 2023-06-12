@@ -1,8 +1,9 @@
 package com.zerobase.store.reserve.entity;
 
-import com.zerobase.store.admin.entity.Shop;
-import com.zerobase.store.global.BaseEntity;
-import com.zerobase.store.user.entity.User;
+import com.zerobase.store.domain.shop.entity.Shop;
+import com.zerobase.store.global.entity.BaseEntity;
+import com.zerobase.store.global.type.ReserveStatus;
+import com.zerobase.store.domain.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

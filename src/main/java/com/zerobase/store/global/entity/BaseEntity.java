@@ -1,4 +1,4 @@
-package com.zerobase.store.global;
+package com.zerobase.store.global.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

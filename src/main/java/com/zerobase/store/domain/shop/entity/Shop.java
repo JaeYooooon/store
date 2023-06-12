@@ -1,7 +1,8 @@
-package com.zerobase.store.admin.entity;
+package com.zerobase.store.domain.shop.entity;
 
-import com.zerobase.store.global.BaseEntity;
-import com.zerobase.store.review.entity.Review;
+import com.zerobase.store.domain.admin.entity.Admin;
+import com.zerobase.store.global.entity.BaseEntity;
+import com.zerobase.store.domain.review.entity.Review;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,7 +30,7 @@ public class Shop extends BaseEntity {
 
     private Double starAvg;
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviewList;
 
     @ManyToOne

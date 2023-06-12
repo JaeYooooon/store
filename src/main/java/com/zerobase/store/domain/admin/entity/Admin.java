@@ -1,6 +1,7 @@
-package com.zerobase.store.admin.entity;
+package com.zerobase.store.domain.admin.entity;
 
-import com.zerobase.store.global.BaseEntity;
+import com.zerobase.store.domain.shop.entity.Shop;
+import com.zerobase.store.global.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,6 +31,6 @@ public class Admin extends BaseEntity {
     @Builder.Default
     private String role = "ADMIN";
 
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Shop> shopList;
 }
