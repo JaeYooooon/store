@@ -1,0 +1,31 @@
+package com.zerobase.store.review.entity;
+
+import com.zerobase.store.admin.entity.Shop;
+import com.zerobase.store.global.BaseEntity;
+import com.zerobase.store.user.entity.User;
+import lombok.*;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "REVIEW")
+public class Review extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "SHOP_ID")
+    private Shop shop;
+
+    private String content;
+
+    private int star;
+}
