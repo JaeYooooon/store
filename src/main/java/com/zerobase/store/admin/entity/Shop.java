@@ -21,13 +21,20 @@ public class Shop extends BaseEntity {
     private String name;
     private String description;
 
+    private String address1;
+    private String address2;
+
     private double latitude;
     private double longitude;
 
     private Double starAvg;
 
-    @OneToMany(mappedBy = "SHOP", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviewList;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 
     public void calculateAverageRating() {
         if (reviewList.isEmpty()) {

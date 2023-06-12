@@ -19,10 +19,11 @@ public class Review extends BaseEntity {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "SHOP_ID")
+    @JoinColumn(name = "shop_id")
     private Shop shop;
 
     private String content;
