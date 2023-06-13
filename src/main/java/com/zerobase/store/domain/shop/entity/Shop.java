@@ -36,6 +36,10 @@ public class Shop extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Shop(Long shopId) {
+        super();
+    }
+
     public void calculateAverageRating() {
         if (reviewList.isEmpty()) {
             starAvg = 0.0;

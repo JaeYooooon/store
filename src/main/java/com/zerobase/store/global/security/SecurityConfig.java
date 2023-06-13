@@ -28,6 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/signup","/signin").permitAll()
+                .antMatchers("/reserve/**", "/shop/**").hasAuthority("USER")
+                .antMatchers("/partner/**").hasAuthority("PARTNER")
                 .and()
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

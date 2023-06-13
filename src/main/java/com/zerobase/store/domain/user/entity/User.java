@@ -1,9 +1,9 @@
 package com.zerobase.store.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zerobase.store.domain.reserve.entity.Reserve;
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.global.entity.BaseEntity;
-import com.zerobase.store.reserve.entity.Reserve;
 import com.zerobase.store.domain.review.entity.Review;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,6 +48,9 @@ public class User extends BaseEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
+    public User(Long userId) {
+        super();
+    }
 
     @Override
     @JsonIgnore

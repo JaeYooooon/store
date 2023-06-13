@@ -1,8 +1,7 @@
-package com.zerobase.store.reserve.entity;
+package com.zerobase.store.domain.reserve.entity;
 
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.global.entity.BaseEntity;
-import com.zerobase.store.global.type.ReserveStatus;
 import com.zerobase.store.domain.user.entity.User;
 import lombok.*;
 
@@ -30,6 +29,6 @@ public class Reserve extends BaseEntity {
 
     private LocalDateTime reservedTime;
 
-    @Enumerated
-    private ReserveStatus status;
+    @Enumerated(EnumType.STRING)
+    private ReserveStatus status = ReserveStatus.DEFAULT;
 }

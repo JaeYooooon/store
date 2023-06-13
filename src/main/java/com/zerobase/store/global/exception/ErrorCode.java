@@ -12,10 +12,13 @@ public enum ErrorCode {
     NONE_EXIST_ID(HttpStatus.BAD_REQUEST, "존재하지 않는 ID 입니다. "),
     NONE_CORRECT_PW(HttpStatus.BAD_REQUEST, "패스워드가 틀렸습니다. "),
     NO_PERMISSION(HttpStatus.BAD_REQUEST, "권한이 없습니다."),
-    NONE_EXIST_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
 
-    NONE_EXIST_SHOP(HttpStatus.NOT_FOUND, "상점을 찾을 수 없습니다."),
-    ALREADY_EXIST_SHOP(HttpStatus.BAD_REQUEST, "이미 등록 되어있는 상점명 입니다. ")
+    NOT_FOUND_SHOP(HttpStatus.NOT_FOUND, "상점을 찾을 수 없습니다."),
+    ALREADY_EXIST_SHOP(HttpStatus.BAD_REQUEST, "이미 등록 되어있는 상점명 입니다. "),
+
+    NOT_FOUND_RESERVE(HttpStatus.NOT_FOUND, "예약내역을 찾을 수 없습니다."),
+    INVALID_RESERVE_TIME(HttpStatus.BAD_REQUEST, "예약할 수 없는 시간입니다. ")
     ;
 
     private final HttpStatus httpStatus;

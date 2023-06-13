@@ -1,6 +1,5 @@
 package com.zerobase.store.domain.shop.service;
 
-import com.zerobase.store.domain.review.dto.ReviewDTO;
 import com.zerobase.store.domain.shop.dto.ShopDTO;
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.domain.shop.repository.ShopRepository;
@@ -33,7 +32,7 @@ public class ShopService {
 
         String userName = principal.getName();
         User user = userRepository.findByUserName(userName)
-                .orElseThrow(() -> new CustomException(NONE_EXIST_USER));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
         if(!user.getRoles().contains("PARTNER")){
             throw new CustomException(NO_PERMISSION);
@@ -58,10 +57,10 @@ public class ShopService {
     public void updateShop(Long shopId, ShopDTO.updateShop updateShop, Principal principal) {
         String userName = principal.getName();
         User user = userRepository.findByUserName(userName)
-                .orElseThrow(() -> new CustomException(NONE_EXIST_USER));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
         Shop shop = shopRepository.findById(shopId)
-                .orElseThrow(() -> new CustomException(NONE_EXIST_SHOP));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
         if (!shop.getUser().equals(user) && !user.getRoles().contains("PARTNER")) {
             throw new CustomException(NO_PERMISSION);
@@ -85,9 +84,9 @@ public class ShopService {
         String userName = principal.getName();
 
         User user = userRepository.findByUserName(userName)
-                .orElseThrow(() -> new CustomException(NONE_EXIST_USER));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         Shop shop = shopRepository.findById(shopId)
-                .orElseThrow(() -> new CustomException(NONE_EXIST_SHOP));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
         if (!shop.getUser().equals(user) && !user.getRoles().contains("PARTNER")) {
             throw new CustomException(NO_PERMISSION);
@@ -121,7 +120,7 @@ public class ShopService {
     // 상점 상세 조회
     public ShopDTO.getShop getShop(Long shopId) {
         Shop shop = shopRepository.findById(shopId)
-                .orElseThrow(() -> new CustomException(NONE_EXIST_SHOP));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
         ShopDTO.getShop shopDTO = ShopDTO.getShop.builder()
                 .shopId(shopId)
