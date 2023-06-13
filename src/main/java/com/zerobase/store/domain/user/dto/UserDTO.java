@@ -39,13 +39,13 @@ public class UserDTO {
 
         }
 
-        public User toAdminEntity(){
+        public User toPartnerEntity(){
             return User.builder()
                     .name(this.name)
                     .phoneNum(this.phoneNum)
                     .userName(this.userName)
                     .password(this.password)
-                    .roles(Collections.singletonList("ADMIN"))
+                    .roles(Collections.singletonList("PARTNER"))
                     .build();
 
         }

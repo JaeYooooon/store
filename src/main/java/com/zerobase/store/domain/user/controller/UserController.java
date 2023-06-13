@@ -27,10 +27,10 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/admin/signup")
-    public ResponseEntity<?> adminRegister(@RequestBody UserDTO.SignUp request) {
+    @PostMapping("/partner/signup")
+    public ResponseEntity<?> partnerRegister(@RequestBody UserDTO.SignUp request) {
 
-        User user = userService.adminRegister(request);
+        User user = userService.partnerRegister(request);
 
         return ResponseEntity.ok(user);
     }
@@ -41,7 +41,7 @@ public class UserController {
         String token = this.tokenProvider.createToken(user.getUsername(), user.getRoles());
         log.info("login -> " + request.getUserName());
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok("Bearer " + token);
     }
 
     @DeleteMapping("/delete")

@@ -45,14 +45,14 @@ public class UserService implements UserDetailsService {
 
     // 관리자 로그인
     @Transactional
-    public User adminRegister(UserDTO.SignUp signUp){
+    public User partnerRegister(UserDTO.SignUp signUp){
         boolean exist = this.userRepository.existsByUserName(signUp.getUserName());
         if(exist){
             throw new CustomException(ALREADY_EXIST_USER);
         }
         signUp.setPassword(passwordEncoder.encode(signUp.getPassword()));
 
-        return this.userRepository.save(signUp.toAdminEntity());
+        return this.userRepository.save(signUp.toPartnerEntity());
     }
 
     public User authenticate(UserDTO.SignIn signIn){
