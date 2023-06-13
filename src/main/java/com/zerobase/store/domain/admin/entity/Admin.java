@@ -31,6 +31,4 @@ public class Admin extends BaseEntity {
     @Builder.Default
     private String role = "ADMIN";
 
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Shop> shopList;
 }

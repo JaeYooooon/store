@@ -19,10 +19,18 @@ public class UserController {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> register(@RequestBody UserDTO.SignUp request) {
+    @PostMapping("/user/signup")
+    public ResponseEntity<?> userRegister(@RequestBody UserDTO.SignUp request) {
 
-        User user = userService.register(request);
+        User user = userService.userRegister(request);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/admin/signup")
+    public ResponseEntity<?> adminRegister(@RequestBody UserDTO.SignUp request) {
+
+        User user = userService.adminRegister(request);
 
         return ResponseEntity.ok(user);
     }

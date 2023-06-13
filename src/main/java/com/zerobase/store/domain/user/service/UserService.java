@@ -30,15 +30,29 @@ public class UserService implements UserDetailsService {
                 .orElseThrow();
     }
 
+    // 유저 로그인
     @Transactional
-    public User register(UserDTO.SignUp signUp){
+    public User userRegister(UserDTO.SignUp signUp){
         boolean exist = this.userRepository.existsByUserName(signUp.getUserName());
         if(exist){
             throw new CustomException(ALREADY_EXIST_USER);
         }
         signUp.setPassword(passwordEncoder.encode(signUp.getPassword()));
 
-        return this.userRepository.save(signUp.toEntity());
+        return this.userRepository.save(signUp.toUserEntity());
+    }
+
+
+    // 관리자 로그인
+    @Transactional
+    public User adminRegister(UserDTO.SignUp signUp){
+        boolean exist = this.userRepository.existsByUserName(signUp.getUserName());
+        if(exist){
+            throw new CustomException(ALREADY_EXIST_USER);
+        }
+        signUp.setPassword(passwordEncoder.encode(signUp.getPassword()));
+
+        return this.userRepository.save(signUp.toAdminEntity());
     }
 
     public User authenticate(UserDTO.SignIn signIn){

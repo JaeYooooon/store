@@ -1,6 +1,7 @@
 package com.zerobase.store.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.global.entity.BaseEntity;
 import com.zerobase.store.reserve.entity.Reserve;
 import com.zerobase.store.domain.review.entity.Review;
@@ -10,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,8 +42,12 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviewList;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Shop> shopList;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
+
 
     @Override
     @JsonIgnore

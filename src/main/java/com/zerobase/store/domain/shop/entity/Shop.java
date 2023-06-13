@@ -1,6 +1,7 @@
 package com.zerobase.store.domain.shop.entity;
 
 import com.zerobase.store.domain.admin.entity.Admin;
+import com.zerobase.store.domain.user.entity.User;
 import com.zerobase.store.global.entity.BaseEntity;
 import com.zerobase.store.domain.review.entity.Review;
 import lombok.*;
@@ -34,8 +35,8 @@ public class Shop extends BaseEntity {
     private List<Review> reviewList;
 
     @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public void calculateAverageRating() {
         if (reviewList.isEmpty()) {

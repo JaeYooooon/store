@@ -3,7 +3,9 @@ package com.zerobase.store.domain.user.dto;
 import com.zerobase.store.domain.user.entity.User;
 import lombok.*;
 
+import java.util.Collections;
 import java.util.List;
+
 
 
 public class UserDTO {
@@ -26,14 +28,25 @@ public class UserDTO {
         private String password;
         private List<String> roles;
 
-        public User toEntity(){
+        public User toUserEntity(){
             return User.builder()
                         .name(this.name)
                         .phoneNum(this.phoneNum)
                         .userName(this.userName)
                         .password(this.password)
-                        .roles(this.roles)
+                        .roles(Collections.singletonList("USER"))
                         .build();
+
+        }
+
+        public User toAdminEntity(){
+            return User.builder()
+                    .name(this.name)
+                    .phoneNum(this.phoneNum)
+                    .userName(this.userName)
+                    .password(this.password)
+                    .roles(Collections.singletonList("ADMIN"))
+                    .build();
 
         }
     }
