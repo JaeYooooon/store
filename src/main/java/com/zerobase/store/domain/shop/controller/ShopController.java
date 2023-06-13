@@ -5,6 +5,7 @@ import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.domain.shop.service.ShopService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,4 +62,25 @@ public class ShopController {
         return ResponseEntity.ok(shopDTO);
     }
 
+    // 이름순
+    @GetMapping("/name")
+    public ResponseEntity<List<ShopDTO>> getShopSortedByName(Pageable pageable){
+
+        return shopService.getShopSortedByName(pageable);
+    }
+
+    // 별점순
+    @GetMapping("/star")
+    public ResponseEntity<List<ShopDTO>> getShopSortedByStarAvg(Pageable pageable){
+
+        return shopService.getShopSortedByStarAvg(pageable);
+    }
+
+    // 이름으로 상점 검색
+    @GetMapping("/search")
+    public ResponseEntity<List<ShopDTO>> searchShopByName(@RequestParam("name") String name,
+                                                          Pageable pageable){
+
+        return shopService.searchShopByName(name, pageable);
+    }
 }

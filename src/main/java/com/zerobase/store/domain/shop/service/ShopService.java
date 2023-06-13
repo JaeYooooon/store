@@ -1,5 +1,6 @@
 package com.zerobase.store.domain.shop.service;
 
+import com.zerobase.store.domain.review.dto.ReviewDTO;
 import com.zerobase.store.domain.shop.dto.ShopDTO;
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.domain.shop.repository.ShopRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.zerobase.store.global.exception.ErrorCode.*;
 
@@ -131,6 +133,54 @@ public class ShopService {
                 .reviews(shop.getReviewList())
                 .build();
 
+        return shopDTO;
+    }
+
+    // 이름순
+    public ResponseEntity<List<ShopDTO>> getShopSortedByName(Pageable pageable){
+        Page<Shop> shopPage = shopRepository.findAllByOrderByNameAsc(pageable);
+        List<Shop> shopList = shopPage.getContent();
+
+        List<ShopDTO> shopDTOList = shopList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(shopDTOList);
+    }
+
+    // 별점순
+    public ResponseEntity<List<ShopDTO>> getShopSortedByStarAvg(Pageable pageable){
+        Page<Shop> shopPage = shopRepository.findAllByOrderByStarAvgDesc(pageable);
+        List<Shop> shopList = shopPage.getContent();
+
+        List<ShopDTO> shopDTOList = shopList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(shopDTOList);
+    }
+
+    // 리뷰 많은순
+
+    // 이름으로 상점 검색
+    public ResponseEntity<List<ShopDTO>> searchShopByName(String name, Pageable pageable){
+        Page<Shop> shopPage = shopRepository.findByNameContainingIgnoreCase(name, pageable);
+        List<Shop> shopList = shopPage.getContent();
+
+        List<ShopDTO> shopDTOList = shopList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(shopDTOList);
+    }
+
+    public ShopDTO convertToDTO(Shop shop) {
+        ShopDTO shopDTO = new ShopDTO();
+        shopDTO.setShopId(shop.getId());
+        shopDTO.setName(shop.getName());
+        shopDTO.setAddress1(shop.getAddress1());
+        shopDTO.setAddress2(shop.getAddress2());
+        shopDTO.setStarAvg(shop.getStarAvg());
         return shopDTO;
     }
 }

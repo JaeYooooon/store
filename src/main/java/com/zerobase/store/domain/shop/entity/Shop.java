@@ -4,6 +4,7 @@ import com.zerobase.store.domain.user.entity.User;
 import com.zerobase.store.global.entity.BaseEntity;
 import com.zerobase.store.domain.review.entity.Review;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Shop extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
     private String description;
 
