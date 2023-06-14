@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
@@ -29,6 +30,7 @@ public class ShopService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void createShop(@RequestBody ShopDTO.createShop createShop,
                                        Principal principal){
 
@@ -56,6 +58,7 @@ public class ShopService {
     }
 
     // 상점 수정
+    @Transactional
     public void updateShop(Long shopId, ShopDTO.updateShop updateShop, Principal principal) {
         String userName = principal.getName();
         User user = userRepository.findByUserName(userName)
@@ -64,12 +67,11 @@ public class ShopService {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
-        if (!shop.getUser().equals(user) && !user.getRoles().contains("PARTNER")) {
+        if (!shop.getUser().equals(user) || !user.getId().equals(shop.getUser().getId())) {
             throw new CustomException(NO_PERMISSION);
         }
 
-        if (updateShop.getName() != null && !updateShop.getName().equals(shop.getName()) &&
-                shopRepository.existsByName(updateShop.getName())) {
+        if (updateShop.getName().equals(shop.getName()) || shopRepository.existsByName(updateShop.getName())) {
             throw new CustomException(ALREADY_EXIST_SHOP);
         }
 
@@ -82,6 +84,7 @@ public class ShopService {
     }
 
     // 상점 삭제
+    @Transactional
     public void deleteShop(Long shopId, Principal principal) {
         String userName = principal.getName();
 
@@ -90,7 +93,7 @@ public class ShopService {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
-        if (!shop.getUser().equals(user) && !user.getRoles().contains("PARTNER")) {
+        if (!shop.getUser().equals(user) || !user.getId().equals(shop.getUser().getId())) {
             throw new CustomException(NO_PERMISSION);
         }
 
