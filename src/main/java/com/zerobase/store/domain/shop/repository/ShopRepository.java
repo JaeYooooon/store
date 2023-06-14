@@ -10,9 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ShopRepository extends JpaRepository<Shop, Long> {
     boolean existsByName(String name);
-
     Page<Shop> findAllByOrderByNameAsc(Pageable pageable);
     Page<Shop> findAllByOrderByStarAvgDesc(Pageable pageable);
-
     Page<Shop> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
 }

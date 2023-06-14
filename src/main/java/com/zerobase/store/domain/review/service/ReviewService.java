@@ -34,7 +34,8 @@ public class ReviewService {
     // 리뷰 작성
     @Transactional
     public void createReview(ReviewDTO reviewDTO, Principal principal) {
-        User user = userRepository.findByUserName(principal.getName())
+        String userName = principal.getName();
+        User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
         Shop shop = shopRepository.findById(reviewDTO.getShopId())
@@ -44,13 +45,13 @@ public class ReviewService {
                 .orElseThrow(() -> new CustomException(NOT_FOUND_RESERVE));
 
 
-        // 본인의 예약 내역이 아닌경우
-        if (!reserve.getUser().equals(user)) {
+        // 본인의 예약내역이아닌경우
+        if(!user.getUsername().equals(reserve.getUser().getUsername())){
             throw new CustomException(NO_PERMISSION);
         }
 
         // 이용을 하지않았거나, 예약시간보다 이전인 경우
-        if(reserve.getReservedTime().isBefore(LocalDateTime.now()) || !reserve.getCheckStatus().equals(CHECKED_IN)){
+        if(reserve.getReservedTime().isAfter(LocalDateTime.now()) || !reserve.getCheckStatus().equals(CHECKED_IN)){
             throw new CustomException(REVIEW_AFTER_SERVICE);
         }
 
@@ -75,36 +76,50 @@ public class ReviewService {
     }
 
     public void updateReview(Long reviewId, ReviewDTO reviewDTO, Principal principal) {
-        User user = userRepository.findByUserName(principal.getName())
-                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        String userName = principal.getName();
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_REVIEW));
 
+        Shop shop = shopRepository.findById(reviewDTO.getShopId())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
+
         // 로그인한 유저와 리뷰를 쓴 유저가 같아야 수정가능
-        if (!review.getUser().getId().equals(user.getId())) {
+        if (!review.getUser().getUsername().equals(userName)) {
             throw new CustomException(NO_PERMISSION);
+        }
+
+        if (reviewDTO.getStar() < 0 || reviewDTO.getStar() > 5) {
+            throw new CustomException(INVALID_STAR);
         }
 
         // 리뷰 수정
         review.setContent(reviewDTO.getContent());
         review.setStar(reviewDTO.getStar());
         reviewRepository.save(review);
+
+        // 별점 업데이트
+        shop.calculateAverageRating();
+        shopRepository.save(shop);
     }
 
     public void deleteReview(Long reviewId, Principal principal) {
-        User user = userRepository.findByUserName(principal.getName())
-                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        String userName = principal.getName();
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_REVIEW));
 
         // 로그인한 유저와 리뷰를 쓴 유저가 같아야 수정가능
-        if (!review.getUser().getId().equals(user.getId())) {
+        if (!review.getUser().getUsername().equals(userName)) {
             throw new CustomException(NO_PERMISSION);
         }
 
+        Shop shop = review.getShop();
         // 리뷰 삭제
         reviewRepository.delete(review);
+
+        // 별점 업데이트
+        shop.calculateAverageRating();
+        shopRepository.save(shop);
     }
 }
