@@ -48,9 +48,7 @@ public class User extends BaseEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
-    public User(Long userId) {
-        super();
-    }
+
 
     @Override
     @JsonIgnore

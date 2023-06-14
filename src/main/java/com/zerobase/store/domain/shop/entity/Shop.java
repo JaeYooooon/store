@@ -1,5 +1,6 @@
 package com.zerobase.store.domain.shop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zerobase.store.domain.user.entity.User;
 import com.zerobase.store.global.entity.BaseEntity;
 import com.zerobase.store.domain.review.entity.Review;
@@ -45,7 +46,7 @@ public class Shop extends BaseEntity {
             for (Review review : reviewList) {
                 sum += review.getStar();
             }
-            starAvg = sum / reviewList.size();
+            starAvg = Math.round((sum / reviewList.size()) * 10.0) / 10.0;
         }
     }
 }

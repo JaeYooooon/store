@@ -125,7 +125,6 @@ public class ReserveService {
             throw new CustomException(LATE_CHECK_IN);
         }
 
-        // 방문 확인 처리 로직 추가
         reserve.setCheckStatus(CHECKED_IN);
         reserveRepository.save(reserve);
     }

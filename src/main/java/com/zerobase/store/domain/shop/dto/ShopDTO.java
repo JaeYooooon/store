@@ -1,5 +1,7 @@
 package com.zerobase.store.domain.shop.dto;
 
+import com.zerobase.store.domain.review.dto.ReviewDTO;
+import com.zerobase.store.domain.review.dto.ReviewDetailDTO;
 import com.zerobase.store.domain.review.entity.Review;
 import lombok.*;
 
@@ -42,6 +44,6 @@ public class ShopDTO {
         private String address1;
         private String address2;
         private Double starAvg;
-        private List<Review> reviews;
+        private List<ReviewDetailDTO> reviews;
     }
 }

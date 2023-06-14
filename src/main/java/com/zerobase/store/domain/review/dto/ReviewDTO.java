@@ -9,7 +9,9 @@ import lombok.*;
 @Setter
 public class ReviewDTO {
     private Long id;
+    private Long shopId;
     private Long userId;
+    private Long reserveId;
     private String content;
     private int star;
 }
