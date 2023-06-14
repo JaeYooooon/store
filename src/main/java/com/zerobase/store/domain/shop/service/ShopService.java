@@ -1,6 +1,5 @@
 package com.zerobase.store.domain.shop.service;
 
-import com.zerobase.store.domain.review.dto.ReviewDTO;
 import com.zerobase.store.domain.review.dto.ReviewDetailDTO;
 import com.zerobase.store.domain.shop.dto.ShopDTO;
 import com.zerobase.store.domain.shop.entity.Shop;
@@ -38,6 +37,7 @@ public class ShopService {
         User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
+        // 파트너 권한이 없을경우
         if(!user.getRoles().contains("PARTNER")){
             throw new CustomException(NO_PERMISSION);
         }
@@ -147,17 +147,15 @@ public class ShopService {
 
         shop.calculateAverageRating();
 
-        ShopDTO.getShop shopDTO = ShopDTO.getShop.builder()
+        return ShopDTO.getShop.builder()
                 .shopId(shopId)
                 .name(shop.getName())
                 .description(shop.getDescription())
                 .address1(shop.getAddress1())
                 .address2(shop.getAddress2())
                 .starAvg(shop.getStarAvg())
-                .reviews(reviewDTOList)  // 리뷰 목록 설정
+                .reviews(reviewDTOList)
                 .build();
-
-        return shopDTO;
     }
 
     // 이름순

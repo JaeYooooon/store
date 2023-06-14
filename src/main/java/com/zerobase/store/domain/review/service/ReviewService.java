@@ -1,7 +1,6 @@
 package com.zerobase.store.domain.review.service;
 
 import com.zerobase.store.domain.reserve.entity.Reserve;
-import com.zerobase.store.domain.reserve.entity.status.CheckStatus;
 import com.zerobase.store.domain.reserve.repository.ReserveRepository;
 import com.zerobase.store.domain.review.dto.ReviewDTO;
 import com.zerobase.store.domain.review.entity.Review;
@@ -18,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
-import static com.zerobase.store.domain.reserve.entity.status.CheckStatus.*;
-import static com.zerobase.store.domain.reserve.entity.status.ReserveStatus.APPROVED;
+import static com.zerobase.store.domain.reserve.entity.status.CheckStatus.CHECKED_IN;
 import static com.zerobase.store.global.exception.ErrorCode.*;
 
 @Service
@@ -67,7 +65,6 @@ public class ReviewService {
         review.setStar(reviewDTO.getStar());
         shop.getReviewList().add(review);
 
-        // 리뷰 저장
         reviewRepository.save(review);
 
         // 별점 평균 계산
@@ -89,11 +86,11 @@ public class ReviewService {
             throw new CustomException(NO_PERMISSION);
         }
 
+        // 별점 0 ~ 5 사이
         if (reviewDTO.getStar() < 0 || reviewDTO.getStar() > 5) {
             throw new CustomException(INVALID_STAR);
         }
 
-        // 리뷰 수정
         review.setContent(reviewDTO.getContent());
         review.setStar(reviewDTO.getStar());
         reviewRepository.save(review);
@@ -115,7 +112,6 @@ public class ReviewService {
         }
 
         Shop shop = review.getShop();
-        // 리뷰 삭제
         reviewRepository.delete(review);
 
         // 별점 업데이트

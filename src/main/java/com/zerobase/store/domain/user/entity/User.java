@@ -2,10 +2,13 @@ package com.zerobase.store.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zerobase.store.domain.reserve.entity.Reserve;
+import com.zerobase.store.domain.review.entity.Review;
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.global.entity.BaseEntity;
-import com.zerobase.store.domain.review.entity.Review;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,16 +28,15 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // 신짱구
+    private String name;
 
     @Column(unique = true)
-    private String userName; // zzang9
+    private String userName;
 
-    private String password; // zzang99
+    private String password;
 
     @Column(unique = true)
-    private String phoneNum; // 010-0000-0000
-
+    private String phoneNum;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reserve> reserveList;

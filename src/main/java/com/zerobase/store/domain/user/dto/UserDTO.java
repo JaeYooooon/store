@@ -1,7 +1,7 @@
 package com.zerobase.store.domain.user.dto;
 
 import com.zerobase.store.domain.user.entity.User;
-import lombok.*;
+import lombok.Data;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,14 +48,6 @@ public class UserDTO {
                     .roles(Collections.singletonList("PARTNER"))
                     .build();
 
-        }
-    }
-    @Data
-    public static class LogoutRequest {
-        private String token;
-
-        public LogoutRequest(String token) {
-            this.token = token;
         }
     }
 }

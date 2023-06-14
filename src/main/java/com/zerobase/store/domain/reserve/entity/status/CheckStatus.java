@@ -6,6 +6,4 @@ public enum CheckStatus {
 
 
     public static final CheckStatus DEFAULT = PENDING;
-
-
     }

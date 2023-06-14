@@ -2,7 +2,6 @@ package com.zerobase.store.domain.reserve.service;
 
 import com.zerobase.store.domain.reserve.dto.ReserveDTO;
 import com.zerobase.store.domain.reserve.entity.Reserve;
-import com.zerobase.store.domain.reserve.entity.status.CheckStatus;
 import com.zerobase.store.domain.reserve.entity.status.ReserveStatus;
 import com.zerobase.store.domain.reserve.repository.ReserveRepository;
 import com.zerobase.store.domain.shop.entity.Shop;
@@ -61,6 +60,7 @@ public class ReserveService {
         Reserve reserve = reserveRepository.findById(reserveId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_RESERVE));
 
+        // 로그인한 유저와 예약을 한 유저가 다르면
         if(!user.getUsername().equals(reserve.getUser().getUsername())){
             throw new CustomException(NO_PERMISSION);
         }
@@ -77,9 +77,11 @@ public class ReserveService {
         Reserve reserve = reserveRepository.findById(reserveId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_RESERVE));
 
+        // 로그인한 유저와 예약을 한 유저가 다르면
         if(!user.getUsername().equals(reserve.getUser().getUsername())){
             throw new CustomException(NO_PERMISSION);
         }
+        // 현재 시간보다 이전시간으로 설정하면
         if(time.isBefore(LocalDateTime.now())){
             throw new CustomException(INVALID_RESERVE_TIME);
         }
@@ -109,11 +111,11 @@ public class ReserveService {
 
         Reserve reserve = reserveRepository.findById(reserveId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_RESERVE));
-
+        // 로그인한 유저와 예약을 한 유저가 다르면
         if (!user.getUsername().equals(reserve.getUser().getUsername())) {
             throw new CustomException(NO_PERMISSION);
         }
-
+        // 예약이 승인된 상태가 아니라면
         if(!reserve.getStatus().equals(ReserveStatus.APPROVED)){
             throw new CustomException(CHECK_RESERVE);
         }
@@ -122,10 +124,13 @@ public class ReserveService {
         LocalDateTime reservationTime = reserve.getReservedTime();
         LocalDateTime checkInTime = reservationTime.minusMinutes(10);
 
+        // 10분보다 더 빨리 체크인을 하려하면
+        // 필요없는 예외처리인지
         if (now.isBefore(checkInTime)) {
             throw new CustomException(EARLY_CHECK_IN);
         }
 
+        // 예약시간보다 늦게 체크인 하려하면
         if (now.isAfter(reservationTime)) {
             throw new CustomException(LATE_CHECK_IN);
         }
@@ -133,8 +138,6 @@ public class ReserveService {
         reserve.setCheckStatus(CHECKED_IN);
         reserveRepository.save(reserve);
     }
-
-
 
 
 
@@ -146,12 +149,12 @@ public class ReserveService {
         String userName = principal.getName();
         User user = userRepository.findByUserName(userName).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
+        // 파트너 권한이 없다면
         if(!user.getRoles().contains("PARTNER")){
             throw new CustomException(NO_PERMISSION);
         }
 
         reserve.setStatus(status);
-
         reserveRepository.save(reserve);
     }
 

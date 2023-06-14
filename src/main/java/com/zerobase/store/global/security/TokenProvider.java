@@ -1,25 +1,19 @@
 package com.zerobase.store.global.security;
 
-import com.zerobase.store.domain.user.entity.User;
-import com.zerobase.store.domain.user.repository.UserRepository;
 import com.zerobase.store.domain.user.service.UserService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-
-import static com.zerobase.store.global.security.JwtAuthenticationFilter.TOKEN_HEADER;
-import static com.zerobase.store.global.security.JwtAuthenticationFilter.TOKEN_PREFIX;
+import java.util.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component

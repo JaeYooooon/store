@@ -1,10 +1,8 @@
 package com.zerobase.store.domain.review.entity;
 
 import com.zerobase.store.domain.shop.entity.Shop;
-import com.zerobase.store.global.entity.BaseEntity;
 import com.zerobase.store.domain.user.entity.User;
-import com.zerobase.store.global.exception.CustomException;
-import com.zerobase.store.global.exception.ErrorCode;
+import com.zerobase.store.global.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;

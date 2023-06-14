@@ -4,9 +4,7 @@ import com.zerobase.store.domain.user.dto.UserDTO;
 import com.zerobase.store.domain.user.entity.User;
 import com.zerobase.store.domain.user.repository.UserRepository;
 import com.zerobase.store.global.exception.CustomException;
-import com.zerobase.store.global.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +32,8 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User userRegister(UserDTO.SignUp signUp){
         boolean exist = this.userRepository.existsByUserName(signUp.getUserName());
+
+        // 이미 등록된 아이디면
         if(exist){
             throw new CustomException(ALREADY_EXIST_USER);
         }
@@ -47,6 +47,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User partnerRegister(UserDTO.SignUp signUp){
         boolean exist = this.userRepository.existsByUserName(signUp.getUserName());
+        // 이미 등록된 아이디면
         if(exist){
             throw new CustomException(ALREADY_EXIST_USER);
         }
@@ -59,6 +60,7 @@ public class UserService implements UserDetailsService {
         User user = this.userRepository.findByUserName(signIn.getUserName())
                 .orElseThrow(() -> new CustomException(NONE_EXIST_ID));
 
+        // 입력한 비밀번화와 유저의 비밀번호가 다르면
         if(!this.passwordEncoder.matches(signIn.getPassword(), user.getPassword())){
             throw new CustomException(NONE_CORRECT_PW);
         }
@@ -70,6 +72,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUserName(username)
                 .orElseThrow(() -> new CustomException(NONE_EXIST_ID));
 
+        // 입력한 비밀번화와 유저의 비밀번호가 다르면
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(NONE_CORRECT_PW);
         }

@@ -1,8 +1,6 @@
 package com.zerobase.store.domain.shop.dto;
 
-import com.zerobase.store.domain.review.dto.ReviewDTO;
 import com.zerobase.store.domain.review.dto.ReviewDetailDTO;
-import com.zerobase.store.domain.review.entity.Review;
 import lombok.*;
 
 import java.util.List;
