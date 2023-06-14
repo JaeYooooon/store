@@ -1,5 +1,7 @@
 package com.zerobase.store.domain.shop.service;
 
+import com.zerobase.store.domain.review.dto.ReviewDTO;
+import com.zerobase.store.domain.review.dto.ReviewDetailDTO;
 import com.zerobase.store.domain.shop.dto.ShopDTO;
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.domain.shop.repository.ShopRepository;
@@ -102,6 +104,7 @@ public class ShopService {
 
         List<ShopDTO> shopDTOList = new ArrayList<>();
         for(Shop shop : shopList){
+            shop.calculateAverageRating();
             ShopDTO shopDTO = ShopDTO.builder()
                     .shopId(shop.getId())
                     .name(shop.getName())
@@ -122,6 +125,21 @@ public class ShopService {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
+        List<ReviewDetailDTO> reviewDTOList = shop.getReviewList().stream()
+                .map(review -> {
+                    ReviewDetailDTO reviewDTO = new ReviewDetailDTO();
+                    reviewDTO.setId(review.getId());
+                    reviewDTO.setShopId(shopId);
+                    reviewDTO.setUserId(review.getUser().getId());
+                    reviewDTO.setContent(review.getContent());
+                    reviewDTO.setStar(review.getStar());
+
+                    return reviewDTO;
+                })
+                .collect(Collectors.toList());
+
+        shop.calculateAverageRating();
+
         ShopDTO.getShop shopDTO = ShopDTO.getShop.builder()
                 .shopId(shopId)
                 .name(shop.getName())
@@ -129,7 +147,7 @@ public class ShopService {
                 .address1(shop.getAddress1())
                 .address2(shop.getAddress2())
                 .starAvg(shop.getStarAvg())
-                .reviews(shop.getReviewList())
+                .reviews(reviewDTOList)  // 리뷰 목록 설정
                 .build();
 
         return shopDTO;
