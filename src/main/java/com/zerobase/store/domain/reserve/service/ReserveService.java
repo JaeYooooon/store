@@ -38,6 +38,11 @@ public class ReserveService {
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
 
+        // 지금보다 이전의 시간을 예약하려하는경우
+        if (reserveDTO.getReservedTime().isBefore(LocalDateTime.now())){
+            throw new CustomException(INVALID_RESERVE_TIME);
+        }
+
         Reserve reserve = new Reserve();
         reserve.setShop(shop);
         reserve.setUser(user);

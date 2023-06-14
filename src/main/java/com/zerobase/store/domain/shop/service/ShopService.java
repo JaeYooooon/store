@@ -42,6 +42,7 @@ public class ShopService {
             throw new CustomException(NO_PERMISSION);
         }
 
+        // 상점명이 없거나 이미 등록된 상점명인경우
         if (createShop.getName() != null && shopRepository.existsByName(createShop.getName())) {
             throw new CustomException(ALREADY_EXIST_SHOP);
         }
@@ -67,10 +68,12 @@ public class ShopService {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
+        // 파트너 계정이여도 본인의 가게가 아니면 수정 불가능
         if (!shop.getUser().equals(user) || !user.getId().equals(shop.getUser().getId())) {
             throw new CustomException(NO_PERMISSION);
         }
 
+        // 이미 등록된 이름이거나, 기존의 이름과 동일하다면
         if (updateShop.getName().equals(shop.getName()) || shopRepository.existsByName(updateShop.getName())) {
             throw new CustomException(ALREADY_EXIST_SHOP);
         }
@@ -93,6 +96,7 @@ public class ShopService {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
+        // 파트너 계정이여도 본인의 가게가 아니면 삭제 불가능
         if (!shop.getUser().equals(user) || !user.getId().equals(shop.getUser().getId())) {
             throw new CustomException(NO_PERMISSION);
         }
