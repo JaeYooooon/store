@@ -29,7 +29,8 @@ public enum ErrorCode {
 
     // 리뷰
     INVALID_STAR(HttpStatus.BAD_REQUEST, "별점은 0부터 5까지의 숫자만 입력할 수 있습니다."),
-    REVIEW_AFTER_SERVICE(HttpStatus.BAD_REQUEST, "이용후 작성하실 수 있습니다.");
+    REVIEW_AFTER_SERVICE(HttpStatus.BAD_REQUEST, "이용후 작성하실 수 있습니다."),
+    NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, "리뷰글을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;

@@ -73,4 +73,38 @@ public class ReviewService {
         shop.calculateAverageRating();
         shopRepository.save(shop);
     }
+
+    public void updateReview(Long reviewId, ReviewDTO reviewDTO, Principal principal) {
+        User user = userRepository.findByUserName(principal.getName())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_REVIEW));
+
+        // 로그인한 유저와 리뷰를 쓴 유저가 같아야 수정가능
+        if (!review.getUser().getId().equals(user.getId())) {
+            throw new CustomException(NO_PERMISSION);
+        }
+
+        // 리뷰 수정
+        review.setContent(reviewDTO.getContent());
+        review.setStar(reviewDTO.getStar());
+        reviewRepository.save(review);
+    }
+
+    public void deleteReview(Long reviewId, Principal principal) {
+        User user = userRepository.findByUserName(principal.getName())
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_REVIEW));
+
+        // 로그인한 유저와 리뷰를 쓴 유저가 같아야 수정가능
+        if (!review.getUser().getId().equals(user.getId())) {
+            throw new CustomException(NO_PERMISSION);
+        }
+
+        // 리뷰 삭제
+        reviewRepository.delete(review);
+    }
 }
