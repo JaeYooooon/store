@@ -1,5 +1,7 @@
 package com.zerobase.store.domain.reserve.entity;
 
+import com.zerobase.store.domain.reserve.entity.status.CheckStatus;
+import com.zerobase.store.domain.reserve.entity.status.ReserveStatus;
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.global.entity.BaseEntity;
 import com.zerobase.store.domain.user.entity.User;
@@ -31,4 +33,7 @@ public class Reserve extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ReserveStatus status = ReserveStatus.DEFAULT;
+
+    @Enumerated(EnumType.STRING)
+    private CheckStatus checkStatus = CheckStatus.DEFAULT;
 }

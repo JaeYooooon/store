@@ -27,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signup","/signin").permitAll()
-                .antMatchers("/reserve/**", "/shop/**").hasAuthority("USER")
+                .antMatchers("/signup/**","/signin/**").permitAll()
+                .antMatchers("/reserve/**", "/shop/**").hasAnyAuthority("USER", "PARTNER")
                 .antMatchers("/partner/**").hasAuthority("PARTNER")
                 .and()
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/");
+                .antMatchers("/swagger-ui/**");
     }
 
     @Bean

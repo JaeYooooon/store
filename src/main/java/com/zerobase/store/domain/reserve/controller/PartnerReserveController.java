@@ -1,9 +1,8 @@
 package com.zerobase.store.domain.reserve.controller;
 
 import com.zerobase.store.domain.reserve.dto.ReserveDTO;
-import com.zerobase.store.domain.reserve.entity.ReserveStatus;
+import com.zerobase.store.domain.reserve.entity.status.ReserveStatus;
 import com.zerobase.store.domain.reserve.service.ReserveService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

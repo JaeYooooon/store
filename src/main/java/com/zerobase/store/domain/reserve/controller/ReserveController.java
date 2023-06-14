@@ -57,4 +57,14 @@ public class ReserveController {
         List<ReserveDTO> reserveList = reserveService.getReserveListByUser(principal);
         return ResponseEntity.ok(reserveList);
     }
+
+    // 예약 10분전 체크
+    @PostMapping("/{reserveId}/check")
+    public ResponseEntity<String> checkIn(@PathVariable Long reserveId,
+                                          Principal principal){
+
+        reserveService.checkIn(reserveId, principal);
+        return ResponseEntity.ok("체크인 완료");
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.zerobase.store.domain.reserve.entity;
+package com.zerobase.store.domain.reserve.entity.status;
 
 public enum ReserveStatus {
     PENDING, // 대기중

@@ -2,7 +2,8 @@ package com.zerobase.store.domain.reserve.service;
 
 import com.zerobase.store.domain.reserve.dto.ReserveDTO;
 import com.zerobase.store.domain.reserve.entity.Reserve;
-import com.zerobase.store.domain.reserve.entity.ReserveStatus;
+import com.zerobase.store.domain.reserve.entity.status.CheckStatus;
+import com.zerobase.store.domain.reserve.entity.status.ReserveStatus;
 import com.zerobase.store.domain.reserve.repository.ReserveRepository;
 import com.zerobase.store.domain.shop.entity.Shop;
 import com.zerobase.store.domain.shop.repository.ShopRepository;
@@ -10,17 +11,15 @@ import com.zerobase.store.domain.user.entity.User;
 import com.zerobase.store.domain.user.repository.UserRepository;
 import com.zerobase.store.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.zerobase.store.domain.reserve.entity.ReserveStatus.PENDING;
+import static com.zerobase.store.domain.reserve.entity.status.CheckStatus.CHECKED_IN;
 import static com.zerobase.store.global.exception.ErrorCode.*;
 
 @Service
@@ -96,6 +95,44 @@ public class ReserveService {
                 .collect(Collectors.toList());
     }
 
+    // 예약 10분전
+    @Transactional
+    public void checkIn(Long reserveId, Principal principal) {
+        String userName = principal.getName();
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        Reserve reserve = reserveRepository.findById(reserveId)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_RESERVE));
+
+        if (!user.getUsername().equals(reserve.getUser().getUsername())) {
+            throw new CustomException(NO_PERMISSION);
+        }
+
+        if(!reserve.getStatus().equals(ReserveStatus.APPROVED)){
+            throw new CustomException(CHECK_RESERVE);
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime reservationTime = reserve.getReservedTime();
+        LocalDateTime checkInTime = reservationTime.minusMinutes(10);
+
+        if (now.isBefore(checkInTime)) {
+            throw new CustomException(EARLY_CHECK_IN);
+        }
+
+        if (now.isAfter(reservationTime)) {
+            throw new CustomException(LATE_CHECK_IN);
+        }
+
+        // 방문 확인 처리 로직 추가
+        reserve.setCheckStatus(CHECKED_IN);
+        reserveRepository.save(reserve);
+    }
+
+
+
+
 
     // 파트너
     @Transactional
@@ -140,6 +177,7 @@ public class ReserveService {
         reserveDTO.setUserId(reserve.getUser().getId());
         reserveDTO.setReservedTime(reserve.getReservedTime());
         reserveDTO.setStatus(reserve.getStatus());
+        reserveDTO.setCheckStatus(reserve.getCheckStatus());
         return reserveDTO;
     }
 }

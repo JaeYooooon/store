@@ -18,8 +18,11 @@ public enum ErrorCode {
     ALREADY_EXIST_SHOP(HttpStatus.BAD_REQUEST, "이미 등록 되어있는 상점명 입니다. "),
 
     NOT_FOUND_RESERVE(HttpStatus.NOT_FOUND, "예약내역을 찾을 수 없습니다."),
-    INVALID_RESERVE_TIME(HttpStatus.BAD_REQUEST, "예약할 수 없는 시간입니다. ")
-    ;
+    CHECK_RESERVE(HttpStatus.NOT_FOUND, "예약내역을 확인해주세요. "),
+    INVALID_RESERVE_TIME(HttpStatus.BAD_REQUEST, "예약할 수 없는 시간입니다. "),
+
+    EARLY_CHECK_IN(HttpStatus.BAD_REQUEST, "예약시간 10분전 체크인을 해주세요. "),
+    LATE_CHECK_IN(HttpStatus.BAD_REQUEST, "예약시간이 지났습니다. ");
 
     private final HttpStatus httpStatus;
     private final String detail;
