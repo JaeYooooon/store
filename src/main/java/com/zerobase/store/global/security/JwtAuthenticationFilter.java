@@ -25,6 +25,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
 
+    /**
+     * 요청 당 한 번씩 필터링하는 메소드
+     *
+     * @param request     현재 요청
+     * @param response    현재 응답
+     * @param filterChain 필터 체인
+     * @throws ServletException 서블릿 예외
+     * @throws IOException      입출력 예외
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -40,6 +49,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * 요청에서 토큰을 추출하는 메소드
+     *
+     * @param request 현재 요청
+     * @return 추출된 토큰
+     */
     public String resolveTokenFromRequest(HttpServletRequest request) {
         String token = request.getHeader((TOKEN_HEADER));
 

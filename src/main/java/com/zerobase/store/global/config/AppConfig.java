@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AppConfig {
+    // 비밀번호 암호화를 위한 PasswordEncoder 빈 생성
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

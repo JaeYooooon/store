@@ -12,6 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfig {
 
+    // Swagger Docket 빈 생성
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -21,6 +22,7 @@ public class SwaggerConfig {
                 .build().apiInfo(apiInfo());
     }
 
+    // API 문서 정보 설정
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Store API")

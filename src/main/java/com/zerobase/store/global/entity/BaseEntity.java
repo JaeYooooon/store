@@ -23,12 +23,14 @@ public class BaseEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime modifiedDt;
 
+    // 데이터가 저장되기 전에 실행되는 메서드
     @PrePersist
     public void onPrePersist() {
         this.createdDt = LocalDateTime.now();
         this.modifiedDt = this.createdDt;
     }
 
+    // 데이터가 수정되기 전에 실행되는 메서드
     @PreUpdate
     public void onPreUpdate() {
         this.modifiedDt = LocalDateTime.now();

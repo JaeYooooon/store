@@ -19,6 +19,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter authenticationFilter;
 
+    /**
+     * HTTP 보안 구성을 설정
+     *
+     * @param http HTTP 보안 설정 객체
+     * @throws Exception 예외
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
@@ -26,14 +32,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signup/**","/signin/**").permitAll()
-                .antMatchers("/reserve/**", "/shop/**").hasAnyAuthority("USER", "PARTNER")
+                .antMatchers("/signup/**","/signin/**","/delete").permitAll()
+                .antMatchers("/reserve/**", "/shop/**", "/review/**").hasAnyAuthority("USER", "PARTNER")
                 .antMatchers("/partner/**").hasAuthority("PARTNER")
                 .and()
                 .addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-
+    /**
+     * 인증 관리자 빈 등록
+     *
+     * @return 인증 관리자
+     * @throws Exception 예외
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
