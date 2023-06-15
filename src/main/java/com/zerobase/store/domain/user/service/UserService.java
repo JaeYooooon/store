@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow();
     }
 
-    // 유저 로그인
+    // 유저 회원가입
     @Transactional
     public User userRegister(UserDTO.SignUp signUp){
         boolean exist = this.userRepository.existsByUserName(signUp.getUserName());
@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    // 관리자 로그인
+    // 관리자 회원가입
     @Transactional
     public User partnerRegister(UserDTO.SignUp signUp){
         boolean exist = this.userRepository.existsByUserName(signUp.getUserName());
@@ -56,6 +56,7 @@ public class UserService implements UserDetailsService {
         return this.userRepository.save(signUp.toPartnerEntity());
     }
 
+    // 로그인
     public User authenticate(UserDTO.SignIn signIn){
         User user = this.userRepository.findByUserName(signIn.getUserName())
                 .orElseThrow(() -> new CustomException(NONE_EXIST_ID));

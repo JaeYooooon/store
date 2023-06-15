@@ -39,7 +39,7 @@ public class ShopService {
 
         // 파트너 권한이 없을경우
         if(!user.getRoles().contains("PARTNER")){
-            throw new CustomException(NO_PERMISSION);
+            throw new CustomException(ONLY_PARTNER);
         }
 
         // 상점명이 없거나 이미 등록된 상점명인경우
@@ -68,8 +68,13 @@ public class ShopService {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
+        // 파트너 권한이 없을경우
+        if(!user.getRoles().contains("PARTNER")){
+            throw new CustomException(ONLY_PARTNER);
+        }
+
         // 파트너 계정이여도 본인의 가게가 아니면 수정 불가능
-        if (!shop.getUser().equals(user) || !user.getId().equals(shop.getUser().getId())) {
+        if (!user.getId().equals(shop.getUser().getId())) {
             throw new CustomException(NO_PERMISSION);
         }
 
@@ -96,8 +101,13 @@ public class ShopService {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
 
-        // 파트너 계정이여도 본인의 가게가 아니면 삭제 불가능
-        if (!shop.getUser().equals(user) || !user.getId().equals(shop.getUser().getId())) {
+        // 파트너 권한이 없을경우
+        if(!user.getRoles().contains("PARTNER")){
+            throw new CustomException(ONLY_PARTNER);
+        }
+
+        // 파트너 계정이여도 본인의 가게가 아니면 수정 불가능
+        if (!user.getId().equals(shop.getUser().getId())) {
             throw new CustomException(NO_PERMISSION);
         }
 
@@ -181,8 +191,6 @@ public class ShopService {
 
         return ResponseEntity.ok(shopDTOList);
     }
-
-    // 리뷰 많은순
 
     // 이름으로 상점 검색
     public ResponseEntity<List<ShopDTO>> searchShopByName(String name, Pageable pageable){

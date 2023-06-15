@@ -147,21 +147,39 @@ public class ReserveService {
         Reserve reserve = reserveRepository.findById(reserveId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_RESERVE));
         String userName = principal.getName();
-        User user = userRepository.findByUserName(userName).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+        Shop shop = reserve.getShop();
 
         // 파트너 권한이 없다면
         if(!user.getRoles().contains("PARTNER")){
+            throw new CustomException(ONLY_PARTNER);
+        }
+
+        // 내가 등록한 상점의 예약건만 상태 변경 가능
+        if(!userName.equals(shop.getUser().getUsername())){
             throw new CustomException(NO_PERMISSION);
         }
+
 
         reserve.setStatus(status);
         reserveRepository.save(reserve);
     }
 
     public List<ReserveDTO> getReserveList(Long shopId, Principal principal){
+
         String userName = principal.getName();
+
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_SHOP));
+
+        // 파트너 권한이 없다면
+        if(!user.getRoles().contains("PARTNER")){
+            throw new CustomException(ONLY_PARTNER);
+        }
 
         // 내가 등록한 상점의 예약 목록만 조회 가능
         if(!userName.equals(shop.getUser().getUsername())){

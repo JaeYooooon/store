@@ -9,9 +9,10 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     // 유저
     ALREADY_EXIST_USER(HttpStatus.BAD_REQUEST, "이미 등록 되어있는 사용자입니다. "),
-    NONE_EXIST_ID(HttpStatus.BAD_REQUEST, "존재하지 않는 ID 입니다. "),
+    NONE_EXIST_ID(HttpStatus.NOT_FOUND, "존재하지 않는 ID 입니다. "),
     NONE_CORRECT_PW(HttpStatus.BAD_REQUEST, "패스워드가 틀렸습니다. "),
     NO_PERMISSION(HttpStatus.BAD_REQUEST, "권한이 없습니다."),
+    ONLY_PARTNER(HttpStatus.BAD_REQUEST, "파트너 회원만 이용 가능합니다. "),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
 
     // 매장
@@ -29,7 +30,7 @@ public enum ErrorCode {
 
     // 리뷰
     INVALID_STAR(HttpStatus.BAD_REQUEST, "별점은 0부터 5까지의 숫자만 입력할 수 있습니다."),
-    REVIEW_AFTER_SERVICE(HttpStatus.BAD_REQUEST, "이용후 작성하실 수 있습니다."),
+    REVIEW_AFTER_SERVICE(HttpStatus.BAD_REQUEST, "이용 후 작성하실 수 있습니다."),
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, "리뷰글을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
